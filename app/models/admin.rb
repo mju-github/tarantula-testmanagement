@@ -3,6 +3,21 @@
 Admin specific user logic.
 
 =end
+
+# new code for deprecated alias_method_chain below
+module ProjectAssignmentWithAdmin
+  def project_assignments
+    missing = Project.all - self.projects
+
+    missing.each do |m|
+      ProjectAssignment.create!(:user_id => self.id, :project_id => m.id, 
+				:group => 'ADMIN')
+    end
+    self.clear_association_cache unless missing.empty?
+    super
+  end
+end
+
 class Admin < User # STI
   def admin?; true; end
   
@@ -18,7 +33,9 @@ class Admin < User # STI
     self.clear_association_cache unless missing.empty?
     project_assignments_without_admin
   end
-  alias_method_chain :project_assignments, :admin
+ 
+  #deprecated in Ruby 5, find module above instead
+  #alias_method_chain :project_assignments, :admin
   
   def allowed_in_project?(pid,req_groups = nil); true; end
 
