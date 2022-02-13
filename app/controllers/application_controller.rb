@@ -6,9 +6,9 @@
 
 class ApplicationController < ActionController::Base
   # protect_from_forgery
-  before_filter :set_current_user_and_project, :except => [:login]
-  before_filter :apply_currents
-  before_filter :clean_data
+  before_action :set_current_user_and_project, :except => [:login]
+  before_action :apply_currents
+  before_action :clean_data
 
   rescue_from StandardError do |exception|
     logger.debug exception.message+"\n"+(exception.backtrace.join("\n"))
