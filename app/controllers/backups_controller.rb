@@ -1,7 +1,7 @@
 class BackupsController < ApplicationController
   layout false
   
-  before_filter do |c|
+  before_action do |c|
     c.require_permission(['ADMIN'])
   end
 

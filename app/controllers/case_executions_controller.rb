@@ -1,11 +1,11 @@
 class CaseExecutionsController < ApplicationController
-  before_filter :only => :update do |c|
+  before_action :only => :update do |c|
     c.require_permission(['TEST_ENGINEER','TEST_DESIGNER','MANAGER'])
   end
-  before_filter :only => [:index, :show] do |c|
+  before_action :only => [:index, :show] do |c|
     c.require_permission(:any)
   end
-  before_filter :only => [:destroy] do |c|
+  before_action :only => [:destroy] do |c|
     c.require_permission(['TEST_DESIGNER', 'MANAGER'])
   end
 

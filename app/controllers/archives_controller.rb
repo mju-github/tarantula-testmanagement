@@ -1,5 +1,5 @@
 class ArchivesController < ApplicationController
-  before_filter :get_resource_class
+  before_action :get_resource_class
   
   # unarchive resources with params[:ids] (csv)
   def destroy

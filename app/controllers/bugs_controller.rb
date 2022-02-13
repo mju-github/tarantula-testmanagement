@@ -1,6 +1,6 @@
 class BugsController < ApplicationController
-  before_filter {|c| c.require_permission(:any)}
-  before_filter :require_tracker
+  before_action {|c| c.require_permission(:any)}
+  before_action :require_tracker
   
   # GET /projects/:project_id/bugs
   def index

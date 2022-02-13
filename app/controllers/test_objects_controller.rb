@@ -1,15 +1,15 @@
 class TestObjectsController < ApplicationController
-  before_filter :get_tags_offset_and_filter, :only => [:index]
+  before_action :get_tags_offset_and_filter, :only => [:index]
   
-  before_filter :only => [:create, :destroy] do |c|
+  before_action :only => [:create, :destroy] do |c|
     c.require_permission(['TEST_DESIGNER','MANAGER'])
   end
-  before_filter :except => [:create, :destroy] do |c|
+  before_action :except => [:create, :destroy] do |c|
     c.require_permission(:any)  
   end
   
-  before_filter :test_object_test_area_permissions, :except => [:index, :create]
-  before_filter :include_users_test_area, :only => [:create, :update]
+  before_action :test_object_test_area_permissions, :except => [:index, :create]
+  before_action :include_users_test_area, :only => [:create, :update]
   
   # GET /projects/x/test_objects
   def index

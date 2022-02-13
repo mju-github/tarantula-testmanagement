@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
 class ReportController < ApplicationController
-  before_filter :except => [:dashboard] do |c|
+  before_action :except => [:dashboard] do |c|
     c.require_permission(['TEST_DESIGNER','MANAGER','ADMIN',
                           'MANAGER_VIEW_ONLY'])
   end
-  before_filter :only => :dashboard do |c|
+  before_action :only => :dashboard do |c|
     c.require_permission(:any)
   end
 

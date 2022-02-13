@@ -2,16 +2,16 @@
 
 class TestSetsController < ApplicationController
 
-  before_filter :only => [:create, :destroy, :update] do |f|
+  before_action :only => [:create, :destroy, :update] do |f|
     f.require_permission(['TEST_DESIGNER','MANAGER'])
   end
-  before_filter :only => [:index, :show] do |f|
+  before_action :only => [:index, :show] do |f|
     f.require_permission(:any)
   end
 
-  before_filter :get_tags_offset_and_filter, :only => [:index]
-  before_filter :test_set_test_area_permissions, :except => [:index, :create]
-  before_filter :include_users_test_area, :only => [:create, :update]
+  before_action :get_tags_offset_and_filter, :only => [:index]
+  before_action :test_set_test_area_permissions, :except => [:index, :create]
+  before_action :include_users_test_area, :only => [:create, :update]
   
   # GET /test_sets
   def index

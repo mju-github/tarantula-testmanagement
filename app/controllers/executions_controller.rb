@@ -1,17 +1,17 @@
 # -*- coding: utf-8 -*-
 # Test set executions
 class ExecutionsController < ApplicationController
-  before_filter :only => [:index, :show] do |c|
+  before_action :only => [:index, :show] do |c|
     c.require_permission(:any)
   end
-  before_filter :only => [:create, :destroy, :update] do |c|
+  before_action :only => [:create, :destroy, :update] do |c|
     c.require_permission(['TEST_DESIGNER','MANAGER'])
   end
 
-  before_filter :get_tags_offset_and_filter, :only => [:index]
+  before_action :get_tags_offset_and_filter, :only => [:index]
 
-  before_filter :execution_test_area_permissions, :except => [:index, :create]
-  before_filter :include_users_test_area, :only => [:create, :update]
+  before_action :execution_test_area_permissions, :except => [:index, :create]
+  before_action :include_users_test_area, :only => [:create, :update]
 
   #  GET /projects/:project_id/users/:user_id/executions
   #   Get all available executions from given project.

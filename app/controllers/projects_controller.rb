@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 class ProjectsController < ApplicationController
-  before_filter :get_tags_offset_and_filter, :only => [:index]
-  before_filter :current_id
+  before_action :get_tags_offset_and_filter, :only => [:index]
+  before_action :current_id
 
-  before_filter :only => [:create, :destroy] do |c|
+  before_action :only => [:create, :destroy] do |c|
     c.require_permission(['ADMIN'])
   end
-  before_filter :only => [:update] do |c|
+  before_action :only => [:update] do |c|
     c.require_permission(['MANAGER', 'ADMIN'])
   end
-  before_filter :except => [:create, :destroy, :update] do |c|
+  before_action :except => [:create, :destroy, :update] do |c|
     c.require_permission(:any)
   end
 

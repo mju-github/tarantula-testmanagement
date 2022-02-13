@@ -5,10 +5,10 @@
 =end
 
 class BugTrackersController < ApplicationController
-  before_filter :only => [:destroy, :create, :update] do |f|
+  before_action :only => [:destroy, :create, :update] do |f|
     f.require_permission(['ADMIN'])
   end
-  before_filter :only => [:show, :index, :products] do |f|
+  before_action :only => [:show, :index, :products] do |f|
     f.require_permission(:any)
   end
 

@@ -1,5 +1,5 @@
 class TestAreasController < ApplicationController  
-  before_filter {|c| c.require_permission(:any)}
+  before_action {|c| c.require_permission(:any)}
 
   # GET /projects/:project_id/test_areas
   def index

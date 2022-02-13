@@ -1,8 +1,8 @@
 class AttachmentsController < AttachmentsControllerBase
-  before_filter :only => [:create, :destroy] do |c|
+  before_action :only => [:create, :destroy] do |c|
     c.require_permission(['TEST_DESIGNER','MANAGER'])
   end
-  before_filter :only => [:index, :show] do |c|
+  before_action :only => [:index, :show] do |c|
     c.require_permission(:any)
   end
 

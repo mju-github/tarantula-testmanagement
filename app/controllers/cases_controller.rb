@@ -2,16 +2,16 @@
 #require 'ruby-debug'
 
 class CasesController < ApplicationController
-  before_filter :only => [:create, :destroy, :update] do |c|
+  before_action :only => [:create, :destroy, :update] do |c|
     c.require_permission(['TEST_DESIGNER','MANAGER'])
   end
-  before_filter :only => [:index, :show, :change_history] do |c|
+  before_action :only => [:index, :show, :change_history] do |c|
     c.require_permission(:any)
   end
-  before_filter :get_tags_offset_and_filter, :only => [:index]
-  before_filter :case_test_area_permissions, :except => [:index, :create, :destroy]
-  before_filter :case_test_area_permissions_multi, :only => [:destroy]
-  before_filter :include_users_test_area, :only => [:create, :update]
+  before_action :get_tags_offset_and_filter, :only => [:index]
+  before_action :case_test_area_permissions, :except => [:index, :create, :destroy]
+  before_action :case_test_area_permissions_multi, :only => [:destroy]
+  before_action :include_users_test_area, :only => [:create, :update]
 
   #  GET /project/:project_id/cases.tree
   #   Lists cases from the project using ExtJS treeformat for json.

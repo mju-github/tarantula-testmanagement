@@ -1,15 +1,15 @@
 class RequirementsController < ApplicationController
-  before_filter :get_tags_offset_and_filter, :only => [:index]
+  before_action :get_tags_offset_and_filter, :only => [:index]
 
-  before_filter :only => [:destroy, :create, :update] do |c|
+  before_action :only => [:destroy, :create, :update] do |c|
     c.require_permission(['TEST_DESIGNER','MANAGER'])
   end
-  before_filter :only => [:index, :show] do |c|
+  before_action :only => [:index, :show] do |c|
     c.require_permission(:any)
   end
   
-  before_filter :requirement_test_area_permissions, :except => [:index, :create]
-  before_filter :include_users_test_area, :only => [:create, :update]
+  before_action :requirement_test_area_permissions, :except => [:index, :create]
+  before_action :include_users_test_area, :only => [:create, :update]
   
   def index
     if params[:case_id]
