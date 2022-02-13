@@ -4,7 +4,7 @@ Base attachments controller to be inherited.
 
 =end
 class AttachmentsControllerBase < ApplicationController
-  before_filter :get_host
+  before_action :get_host
 
   def index
     data = @host.attachments.map{|a| a.to_data}

@@ -1,6 +1,7 @@
-Tarantula::Application.routes do
-  root :to => "home#index"
-  
+Tarantula::Application.routes.draw do #.draw needed because otherwise default Welcome page is loaded by railties
+  root to: "home#login"
+  post '/', to: 'home#login'
+
   resource :archive, :only => [:destroy, :create],
     :path => '/projects/:project_id/:resources/archive',
     :controller => 'archives'
@@ -114,8 +115,9 @@ Tarantula::Application.routes do
     end
   end
 
+  #match seems to be outdated, gives error message during db:setup
   resources :customer_configs
-  match 'restart', :to => 'customer_configs#restart'
+  get 'restart', :to => 'customer_configs#restart'
   
   resource :report, :controller => 'report' do
     member do
