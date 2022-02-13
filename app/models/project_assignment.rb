@@ -16,7 +16,7 @@ class ProjectAssignment < ActiveRecord::Base
   delegate :realname, :to => :user
   delegate :login, :to => :user
   
-  scope :nonadmin, where(:group => User::Groups.values)
+  scope :nonadmin, -> { where :group => User::Groups.values }
   
   def project_name
     return project.name
