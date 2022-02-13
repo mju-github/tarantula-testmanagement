@@ -45,10 +45,16 @@ class ApplicationController < ActionController::Base
   def require_permission(allowed_groups = nil)
     allowed_groups = User::Groups.values if allowed_groups == :any
 
+    if (@current_user.admin?)
+      return
+    end
+
+    #if current user is not admin then check for project id
     pid = params[:project_id] || @project.id
 
     raise "require_permission failure!" if pid.nil?
-
+   
+    #TODO current_user.admin? chec has to be removed
     if (@current_user.admin? or @current_user.allowed_in_project?(pid,allowed_groups))
       return
     end
@@ -126,7 +132,10 @@ class ApplicationController < ActionController::Base
 
   def apply_currents
     params[:user_id] = @current_user.id if params[:user_id] == 'current'
-    params[:project_id] = @project.id if params[:project_id] == 'current'
+
+    if not @project.nil? #if user is admin then there is no project
+      params[:project_id] = @project.id if params[:project_id] == 'current'
+    end
   end
 
   def test_area_permissions(klass, id_info, multi=false)
