@@ -51,7 +51,9 @@ module Tarantula
     # This will create an empty whitelist of attributes available for mass-assignment for all models
     # in your app. As such, your models will need to explicitly whitelist or blacklist accessible
     # parameters by using an attr_accessible or attr_protected declaration.
-    config.active_record.whitelist_attributes = false
+    
+   
+    #config.active_record.whitelist_attributes = false #does not work in Rails4 and above
 
     # Enable the asset pipeline
     config.assets.enabled = true
@@ -62,7 +64,7 @@ module Tarantula
     config.assets.version = '1.0'
 
     config.autoload_paths += [config.root.join('lib')]
-    config.middleware.use "Authenticator", "Testia"
+    #config.middleware.use "Authenticator", "Testia"  #would not run in Rails6 because Authenticator is a string and has no method "new"
     config.logger = Logger.new("#{Rails.root}/log/#{Rails.env}.log", 5, 100_000000)
     config.autoload_paths += %W( #{Rails.root}/app/models/core
                                  #{Rails.root}/app/models/report
@@ -80,11 +82,13 @@ module Tarantula
                                  )
     config.time_zone = 'Helsinki'
 
-    config.active_record.observers = [:user_observer, :case_execution_observer,
-                                      :execution_observer, :tagging_observer]
-    config.after_initialize do
+   #does not work in Rails 6
+   # config.active_record.observers = [:user_observer, :case_execution_observer,
+   #                                   :execution_observer, :tagging_observer]
+ 
+   config.after_initialize do
       CustomerConfigsController.class_eval do
-        before_filter do |c|
+        before_action do |c|
           c.require_permission(['ADMIN'])
         end
       end
