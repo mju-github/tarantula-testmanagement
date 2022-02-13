@@ -9,13 +9,16 @@ class Tag < ActiveRecord::Base
   validates_uniqueness_of :name, :case_sensitive => false,
                           :scope => [:project_id, :taggable_type]
   
-  validates_format_of :name, :with => /^[^,]+$/,
+  validates_format_of :name, :with => /\A[\A,]+z/,
   :message => "Comma is not allowed in tag name."
   has_many :taggings, :dependent => :destroy
   belongs_to :project
   
-  scope :ordered, order('name ASC')
-  
+  #deprecated in Rails 4
+  #scope :ordered, order('name ASC')
+  scope :ordered, -> {().order('name ASC'}  
+
+
   # used in application controller
   class Error < StandardError
   end
