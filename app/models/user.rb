@@ -6,8 +6,20 @@ A user.
 
 =end
 class User < ActiveRecord::Base
-  scope :active, where(:deleted => 0)
-  scope :deleted, where(:deleted => 1)
+  # "Hacky Solution" by https://flatironsdevelopment.com/blog/rails-devise-not-a-subclass-of-user
+
+  unless Rails.application.config.eager_load
+    def self.find_sti_class(type_name)
+      return User if type_name.to_s  == 'User'
+      return Admin if type_name.to_s == 'Admin'
+    end 
+  end
+
+
+
+
+  scope :active, -> { where :deleted => 0 }
+  scope :deleted, -> { where(:deleted => 1 }
 
   self.locking_column = :version
 
@@ -39,8 +51,7 @@ class User < ActiveRecord::Base
   validates_uniqueness_of   :login, :case_sensitive => false
   before_save :encrypt_password
 
-  has_many :executions, :through => :case_executions, :source => :execution,
-           :uniq => true
+  has_many :executions, -> { uniq }, :through => :case_executions, :source => :execution
 
   has_many :case_executions, :foreign_key => 'assigned_to'
 
