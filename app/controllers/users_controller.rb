@@ -25,9 +25,12 @@ class UsersController < ApplicationController
   def index
 
     if params[:project_id] and
-        (@current_user.admin? or @current_user.project_ids.include?(params[:project_id].to_i))
+        @current_user.project_ids.include?(params[:project_id].to_i)
+       # TODO does not seem correct: (@current_user.admin? or @current_user.project_ids.include?(params[:project_id].to_i))
       p_id = params[:project_id]
-      p_id = @project.id if p_id == 'current'
+      if not @project:nil? #if user is admin then there is no assigned project
+        p_id = @project.id if p_id == 'current'
+      end
       active = User.all(
                         :select => 'id, login, deleted, realname',
                         :include => :projects,
@@ -37,10 +40,14 @@ class UsersController < ApplicationController
                                         p_id, "%#{@filter}%"]
                         )
     elsif (@current_user.admin?)
-      active = User.all(
-                        :select => 'id, login, deleted, realname',
-                        :conditions => ["deleted=0 AND login LIKE ? ",
-                                        "%#{@filter}%"])
+    #deprecated method .all
+    #  active = User.all(
+    #                    :select => 'id, login, deleted, realname',
+    #                    :conditions => ["deleted=0 AND login LIKE ? ",
+    #                                    "%#{@filter}%"])
+    
+      active = User.select("id", "login", "deleted", "realname").where("deleted=0 AND login LIKE?", "%#{@filter}%")
+
     else
       # Users in same projects
       active = User.all(

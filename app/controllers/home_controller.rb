@@ -11,7 +11,7 @@ class HomeController < ApplicationController
   def login
     if request.post?
       if u = User.authenticate(params[:login], params[:password])
-        if !u.latest_project
+        if !u.latest_project && !u.admin? # Admin does not need to have a project assignment
           flash.now[:notice] = "You have no project assignments."
           return false
         elsif u.deleted?
