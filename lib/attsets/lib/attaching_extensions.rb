@@ -12,12 +12,16 @@ module AttachingExtensions
     host.instance_eval { define_method(:version) {0} } \
       unless host.column_names.include?('version')
     
-   host.has_many :all_attachment_sets, :class_name => 'AttachmentSet',
-                  :as => :host,-> { order "id DESC" },
-        :conditions => proc {"host_version <= #{self.version}"}
+   host.has_many :all_attachment_sets, 
+		 -> { order(id: :desc) },
+		 :class_name => 'AttachmentSet',
+                 :as => :host, 
+        	 :conditions => proc {"host_version <= #{self.version}"}
 
-    host.has_one :attachment_set, :as => :host,-> { order => "id DESC" },
-        :conditions => proc {"host_version <= #{self.version}"}
+    host.has_one :attachment_set,
+		 -> { order(id: :desc) }, 
+		 :as => :host, 
+         	 :conditions => proc {"host_version <= #{self.version}"}
     
     host.delegate :attachments, :to => '(self.attachment_set or return [])'    
   end
