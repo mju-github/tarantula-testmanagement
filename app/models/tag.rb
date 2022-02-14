@@ -16,7 +16,7 @@ class Tag < ActiveRecord::Base
   
   #deprecated in Rails 4
   #scope :ordered, order('name ASC')
-  scope :ordered, -> {().order('name ASC'}  
+  scope :ordered, -> {().order('name ASC')}  
 
 
   # used in application controller
