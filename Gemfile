@@ -47,3 +47,5 @@ group :production do
 end
 
 group :test, :development do
+  gem 'rspec_rails', '~> 2.0'
+end
