@@ -18,7 +18,7 @@
                         detect{|p| File.exists?(p)} } %>
 development:
   adapter: mysql2
-  database: testia
+  database: testia_dev
   username: testia
   password: testia
   host: localhost
