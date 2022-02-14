@@ -19,7 +19,7 @@ class User < ActiveRecord::Base
 
 
   scope :active, -> { where :deleted => 0 }
-  scope :deleted, -> { where(:deleted => 1 }
+  scope :deleted, -> { where :deleted => 1 }
 
   self.locking_column = :version
 
