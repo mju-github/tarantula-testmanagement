@@ -44,7 +44,7 @@ module Report
 
           pdf.table [[name, pdf.page_count.to_s, Time.now.to_s(:short)] + @phash.values],
               {:headers => ['Report', 'Page', 'Generated At'] + @phash.keys,
-               :align => :left,
+#duplicate     :align => :left,
                :border_style => :underline_header,
                :vertical_padding => 0,
                :horizontal_padding => 2,
