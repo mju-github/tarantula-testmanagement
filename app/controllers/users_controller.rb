@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
 
 class UsersController < ApplicationController
-  before_filter :get_tags_offset_and_filter, :only => [:index]
+  before_action :get_tags_offset_and_filter, :only => [:index]
 
-  before_filter :only => [:create, :destroy] do |f|
+  before_action :only => [:create, :destroy] do |f|
     f.require_permission(['ADMIN'])
   end
-  before_filter :except => [:create, :destroy] do |f|
+  before_action :except => [:create, :destroy] do |f|
     f.require_permission(:any)
   end
 
-  before_filter :get_user
+  before_action :get_user
 
   #  GET /users
   #   Lists all users.

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 class TagsController < ApplicationController
-  before_filter :only => [:create, :destroy, :update] do |c|
+  before_action :only => [:create, :destroy, :update] do |c|
     c.require_permission(['TEST_DESIGNER','MANAGER'])
   end
 
