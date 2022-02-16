@@ -14,14 +14,16 @@ module AttachingExtensions
     
    host.has_many :all_attachment_sets, 
 		 -> { order(id: :desc) },
+                 -> { where( proc {"host_version <= #{self.version}"}) },
 		 :class_name => 'AttachmentSet',
-                 :as => :host, 
-        	 :conditions => proc {"host_version <= #{self.version}"}
+                 :as => :host
+        #deprecated with Rails4	 :conditions => proc {"host_version <= #{self.version}"}
 
     host.has_one :attachment_set,
 		 -> { order(id: :desc) }, 
-		 :as => :host, 
-         	 :conditions => proc {"host_version <= #{self.version}"}
+		 -> { where( proc {"host_version <= #{self.version}"}) },
+		 :as => :host
+        #deprecated with Rails4 	 :conditions => proc {"host_version <= #{self.version}"}
     
     host.delegate :attachments, :to => '(self.attachment_set or return [])'    
   end
