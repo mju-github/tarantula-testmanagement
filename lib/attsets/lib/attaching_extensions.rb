@@ -14,14 +14,14 @@ module AttachingExtensions
     
    host.has_many :all_attachment_sets, 
 		 -> { order(id: :desc) },
-                 -> { where( proc {"host_version <= #{self.version}"}) },
+#TODO FIXIT leads to "wrong number of  arguments" error		 -> { where( proc {"host_version <= #{self.version}"}) },
 		 :class_name => 'AttachmentSet',
                  :as => :host
         #deprecated with Rails4	 :conditions => proc {"host_version <= #{self.version}"}
 
     host.has_one :attachment_set,
 		 -> { order(id: :desc) }, 
-		 -> { where( proc {"host_version <= #{self.version}"}) },
+#TODO FIXIT leads to "wrong number of arguments error		 -> { where( proc {"host_version <= #{self.version}"}) },
 		 :as => :host
         #deprecated with Rails4 	 :conditions => proc {"host_version <= #{self.version}"}
     
