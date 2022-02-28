@@ -8,10 +8,10 @@ Execution. Reflects execution of a single test set.
 class Execution < ActiveRecord::Base
   include TaggingExtensions
   extend CsvExchange::Model
-  scope :active, where(:deleted => 0, :archived => 0)
-  scope :deleted, where(:deleted => 1)
-  scope :completed, where(:completed => true)
-  scope :not_completed, where(:completed => false)
+  scope :active, -> { where(:deleted => 0, :archived => 0) }
+  scope :deleted, -> { where(:deleted => 1) }
+  scope :completed, -> { where(:completed => true) }
+  scope :not_completed, -> { where(:completed => false) }
 
   # default ordering
   scope :ordered, joins(:test_object).order('test_objects.date DESC')

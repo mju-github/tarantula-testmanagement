@@ -17,8 +17,11 @@ class Project < ActiveRecord::Base
   scope :deleted, -> { where(:deleted => 1) }
 
   self.locking_column = :version
-  has_many :assignments, :class_name => 'ProjectAssignment',
-           :dependent => :destroy, :conditions => "`group` != 'ADMIN'"
+  has_many :assignments, 
+	   -> { where( `group` != 'ADMIN') },
+	   :class_name => 'ProjectAssignment',
+           :dependent => :destroy
+	#outdated, :conditions => "`group` != 'ADMIN'"
   has_many :users, :through => :assignments
 
   has_many :cases, :dependent => :destroy
