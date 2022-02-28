@@ -28,7 +28,7 @@ class UsersController < ApplicationController
         @current_user.project_ids.include?(params[:project_id].to_i)
        # TODO does not seem correct: (@current_user.admin? or @current_user.project_ids.include?(params[:project_id].to_i))
       p_id = params[:project_id]
-      if not @project:nil? #if user is admin then there is no assigned project
+      if not @project.nil? then #if user is admin then there is no assigned project
         p_id = @project.id if p_id == 'current'
       end
       active = User.all(
