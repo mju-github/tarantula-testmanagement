@@ -13,8 +13,8 @@ class Project < ActiveRecord::Base
                 {:name => 'normal', :value => 0},
                 {:name => 'low',    :value => -1}]
 
-  scope :active, where(:deleted => 0)
-  scope :deleted, where(:deleted => 1)
+  scope :active,  -> { where(:deleted => 0) }
+  scope :deleted, -> { where(:deleted => 1) }
 
   self.locking_column = :version
   has_many :assignments, :class_name => 'ProjectAssignment',
