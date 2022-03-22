@@ -29,8 +29,10 @@ class ExecutionsController < ApplicationController
 
     if (params[:user_id])
       user = User.find(params[:user_id])
-
-      if (params[:project_id])
+      
+      userid = params[:user_id]
+      projectid = params[:project_id]
+      if (params[:project_id].is_a? Integer) #if user has no project assigned the parameter has value "current" and following code will fail
         #  GET /projects/:project_id/users/:user_id/executions
         project = Project.find(params[:project_id])
         opts = {
