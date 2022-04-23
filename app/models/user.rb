@@ -51,9 +51,12 @@ class User < ActiveRecord::Base
   validates_uniqueness_of   :login, :case_sensitive => false
   before_save :encrypt_password
 
+  has_many :case_executions, :foreign_key => 'assigned_to'   
+
   has_many :executions, -> { uniq }, :through => :case_executions, :source => :execution
 
-  has_many :case_executions, :foreign_key => 'assigned_to'
+  # had to be moved up to before :through association  for new rails version
+  # has_many :case_executions, :foreign_key => 'assigned_to'
 
   has_many :cases_executed, :class_name => 'CaseExecution',
            :foreign_key => 'executed_by'
