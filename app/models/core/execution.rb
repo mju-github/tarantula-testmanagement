@@ -24,9 +24,8 @@ class Execution < ActiveRecord::Base
   belongs_to :creator, :class_name => 'User', :foreign_key => 'created_by'
   belongs_to :updater, :class_name => 'User', :foreign_key => 'updated_by'
 
-  has_many :case_executions, :dependent => :destroy, :order => 'position'
-  has_many :step_executions, :through => :case_executions,
-           :order => 'position'
+  has_many :case_executions, ->{order('position')}, :dependent => :destroy # outdated, :order => 'position'
+  has_many :step_executions, ->{order('position')}, :through => :case_executions #outdated ,:order => 'position'
 
   validates_presence_of :name, :test_object_id, :project_id, :date
 
