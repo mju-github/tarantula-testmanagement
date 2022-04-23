@@ -13,7 +13,7 @@ class CaseExecution < ActiveRecord::Base
 
   belongs_to :execution
 
-  has_many :step_executions, :dependent => :destroy, :order => 'step_executions.position ASC'
+  has_many :step_executions, -> { order('step_executions.position ASC') }, :dependent => :destroy #outdated, :order => 'step_executions.position ASC'
 
   validates_presence_of :execution_id, :case_id
   validates_presence_of :executed_at, :executed_by, :duration, :if => \
