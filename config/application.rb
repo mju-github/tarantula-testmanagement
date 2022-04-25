@@ -79,6 +79,7 @@ module Tarantula
                                  #{Rails.root}/lib/smart_tag
                                  #{Rails.root}/lib/acts_as_versioned/lib
                                  #{Rails.root}/lib/customerconfig/app/models
+				 #{Rails.root}/lib/csv_exchange
                                  )
     config.time_zone = 'Helsinki'
 
