@@ -12,7 +12,7 @@ class TestSet < ActiveRecord::Base
   scope :deleted, ->{ where(:deleted => 1) }
 
   # default ordering
-  scope :ordered, order('priority DESC, name ASC')
+  scope :ordered, -> { order('priority DESC, name ASC') }
 
   acts_as_versioned
   self.locking_column = :version
