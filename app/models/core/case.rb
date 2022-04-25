@@ -16,7 +16,7 @@ class Case < ActiveRecord::Base
   scope :deleted, ->{ where(:deleted => 1) }
 
   # default ordering
-  scope :ordered, order('priority DESC, title ASC')
+  scope :ordered, ->{ order('priority DESC, title ASC') }
 
   acts_as_versioned
   self.locking_column = :version
