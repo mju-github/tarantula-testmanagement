@@ -14,7 +14,7 @@ class Execution < ActiveRecord::Base
   scope :not_completed, -> { where(:completed => false) }
 
   # default ordering
-  scope :ordered, joins(:test_object).order('test_objects.date DESC')
+  scope :ordered, ->{ joins(:test_object).order('test_objects.date DESC') }
 
   self.locking_column = :version
 
