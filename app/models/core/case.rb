@@ -12,8 +12,8 @@ class Case < ActiveRecord::Base
 
   alias_attribute :name, :title
 
-  scope :active, where(:deleted => 0, :archived => 0)
-  scope :deleted, where(:deleted => 1)
+  scope :active, ->{ where(:deleted => 0, :archived => 0 ) }
+  scope :deleted, ->{ where(:deleted => 1) }
 
   # default ordering
   scope :ordered, order('priority DESC, title ASC')
