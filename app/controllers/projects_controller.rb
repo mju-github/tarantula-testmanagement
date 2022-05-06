@@ -20,9 +20,11 @@ class ProjectsController < ApplicationController
     conds += " AND name LIKE '%#{@filter}%'" if @filter
 
     if (@current_user.admin?)
-        projects = Project.find(:all, :conditions => conds)
+        #TAR-14 outdated syntax: projects = Project.find(:all, :conditions => conds)
+        projects = Project.where(conds)
     else
-        projects = @current_user.projects.find(:all, :conditions => conds)
+        #TAR-14 outdated syntax: projects = @current_user.projects.find(:all, :conditions => conds)
+	projects = @current_user.projects.find(conds)
     end
 
     data = projects.map do |p|
@@ -131,7 +133,11 @@ class ProjectsController < ApplicationController
   private
 
   def current_id
-    params[:id] = @project.id if params[:id] == 'current'
+    if !@project.nil?
+      params[:id] = @project.id if params[:id] == 'current'
+    else
+      params[:id] = 0
+    end
   end
 
 end
