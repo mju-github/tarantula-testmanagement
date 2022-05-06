@@ -77,6 +77,7 @@ class ApplicationController < ActionController::Base
   # * TODO: handle more than a LOAD_LIMIT of tags correctly
 
   def get_tagged_items(t_class, opts={:include_tags => true, :conditions => '', :conv_method => :to_tree})
+   unless @project.nil?
     test_area = @current_user.test_area(@project.id)
 
     if opts[:include_tags]
@@ -111,6 +112,7 @@ class ApplicationController < ActionController::Base
     tags_tree = all_tags.map{|t| t.send(opts[:conv_method])} if @offset == 0
     return items_tree if @filter
     tags_tree + items_tree
+   end
   end
 
   def get_tags_offset_and_filter
