@@ -15,11 +15,11 @@ class Base < ActiveRecord::Base
   belongs_to :assignee, :foreign_key => 'assigned_to', :class_name => 'User'
   belongs_to :creator, :foreign_key => 'created_by', :class_name => 'User'
   
-  scope :unfinished, where(:finished => false)
-  scope :finished, where(:finished => true)
-  scope :ordered, order('updated_at desc')
-  scope :active, where(["finished=0 or (finished=1 and updated_at > :time)", 
-                       {:time => 2.weeks.ago}])
+  scope :unfinished, -> { where(:finished => false) }
+  scope :finished, -> {where(:finished => true) }
+  scope :ordered, -> { order('updated_at desc') }
+  scope :active, -> { where(["finished=0 or (finished=1 and updated_at > :time)", 
+                       {:time => 2.weeks.ago}]) }
   
   def to_data
     {:id => self.id,
