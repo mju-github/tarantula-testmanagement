@@ -19,11 +19,11 @@ class TestObject < ActiveRecord::Base
   
   # default ordering
   scope :ordered, 
-              order('test_objects.date DESC, test_objects.created_at DESC')
+              ->{ order('test_objects.date DESC, test_objects.created_at DESC') }
   
-  scope :active, where(:deleted => 0, :archived => 0).order('date desc')
+  scope :active, ->{ where(:deleted => 0, :archived => 0).order('date desc') }
   
-  scope :deleted, where(:deleted => 1).order('date desc')
+  scope :deleted, ->{ where(:deleted => 1).order('date desc') }
 
   # Return project's requirements for this test object.
   # Revert requirements to their last version which is applicable to 
