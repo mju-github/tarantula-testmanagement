@@ -27,10 +27,10 @@ class Requirement < ActiveRecord::Base
     :message => 'id has already been taken'
   
   # default ordering
-  scope :ordered, order('name ASC')
+  scope :ordered, -> { order('name ASC') }
   
-  scope :active, where(:deleted => 0, :archived => 0)
-  scope :deleted, where(:deleted => 1)
+  scope :active, -> { where(:deleted => 0, :archived => 0 ) }
+  scope :deleted,-> { where(:deleted => 1) }
   
   def to_data
     {
