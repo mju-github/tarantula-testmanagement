@@ -8,9 +8,9 @@ class TestArea < ActiveRecord::Base
   validates_uniqueness_of :name, :case_sensitive => false,
                           :scope => :project_id
 
-  validates_format_of :name, :with => /^[^,]+$/
+  validates_format_of :name, :with => /\A[^,]+\Z/
   belongs_to :project
-  scope :ordered, order('name ASC')
+  scope :ordered, -> { order('name ASC') }
 
   has_and_belongs_to_many :requirements, :select => 'requirements.*'
   has_and_belongs_to_many :test_sets, :select => 'test_sets.*'
