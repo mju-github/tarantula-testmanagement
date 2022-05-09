@@ -27,8 +27,8 @@ class User < ActiveRecord::Base
     :test_engineer     => 'TEST_ENGINEER',
     :test_designer     => 'TEST_DESIGNER',
     :manager           => 'MANAGER',
-    :manager_view_only => 'MANAGER_VIEW_ONLY'
-    # :admin => 'ADMIN'
+    :manager_view_only => 'MANAGER_VIEW_ONLY',
+    :admin => 'ADMIN'
   }
 
   alias_attribute :name, :login

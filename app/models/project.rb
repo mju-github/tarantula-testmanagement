@@ -18,10 +18,9 @@ class Project < ActiveRecord::Base
 
   self.locking_column = :version
   has_many :assignments, 
-	   -> { where( `group` != 'ADMIN') },
+	   -> { where( "`group` != 'ADMIN'") },
 	   :class_name => 'ProjectAssignment',
            :dependent => :destroy
-	#outdated, :conditions => "`group` != 'ADMIN'"
   has_many :users, :through => :assignments
 
   has_many :cases, :dependent => :destroy
