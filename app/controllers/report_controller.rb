@@ -11,16 +11,21 @@ class ReportController < ApplicationController
 
   ### DASHBOARD ###############################################################
   def dashboard
-    @pa = @current_user.project_assignments.find_by_project_id(@project.id)
-    @report = Report::Dashboard.new(@current_user.id, @project.id,
+    if !@project.nil?  #if user has no project assigned then there is no project, i.e. nil
+      @pa = @current_user.project_assignments.find_by_project_id(@project.id)
+      @report = Report::Dashboard.new(@current_user.id, @project.id,
                                     @current_user.test_area(@project).try(:id),
                                     @pa.try(:test_object_id))
 
-    if Rails.cache.exist?(@report.cache_key) or Rails.env == 'development'
-      render :json => @report
-    else
-      @report.send_later(:query)
-      render :nothing => true, :status => 202 # accepted
+      if Rails.cache.exist?(@report.cache_key) or Rails.env == 'development'
+        render :json => @report
+      else
+        @report.send_later(:query)
+        render :nothing => true, :status => 202 # accepted
+      end
+      else
+      #TODO MJU: find something better to show then nothing if user has no projects
+        render :nothing => true, :status => 202 #accepted
     end
   end
   #############################################################################

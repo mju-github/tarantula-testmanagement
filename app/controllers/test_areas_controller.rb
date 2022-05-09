@@ -3,23 +3,25 @@ class TestAreasController < ApplicationController
 
   # GET /projects/:project_id/test_areas
   def index
-    @project = Project.find(params[:project_id])
-    current_ta = @current_user.test_area(@project)
+    if (params[:project_id].is_a? Integer) #if user has no project assigned the paramter has value "current" and the following code will fail
+      @project = Project.find(params[:project_id])
+      current_ta = @current_user.test_area(@project)
     
-    if current_ta and current_ta.forced
-      data = [current_ta.to_tree.merge!({:selected => true, :forced => true})]
-      render :json => {:data => data}
-      return
-    end
-    
-    data = @project.test_areas.map do |ta|
-      tadata = ta.to_tree
-      if current_ta and (current_ta.id == ta.id)
-        tadata.merge!({:selected => true, :forced => false})
+      if current_ta and current_ta.forced
+        data = [current_ta.to_tree.merge!({:selected => true, :forced => true})]
+        render :json => {:data => data}
+        return
       end
-      tadata
+    
+      data = @project.test_areas.map do |ta|
+        tadata = ta.to_tree
+        if current_ta and (current_ta.id == ta.id)
+          tadata.merge!({:selected => true, :forced => false})
+        end
+        tadata
+      end
+      render :json => {:data => data}
     end
-    render :json => {:data => data}
   end
   
   # GET /projects/:project_id/users/:user_id/test_area
