@@ -130,7 +130,7 @@ class UsersController < ApplicationController
     end
 
     # Set attributes.
-    @user.update_attributes!(@data)
+    @user.update!(@data)
     render :json => @user.id, :status => :ok
   end
 
