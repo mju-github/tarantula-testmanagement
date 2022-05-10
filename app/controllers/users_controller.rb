@@ -65,6 +65,8 @@ class UsersController < ApplicationController
     if (params[:project_id])
       p_id = params[:project_id]
       p_id = @project.id if p_id == 'current'
+      
+      #TODO this syntax is certainly outdated
       deleted = User.all(
                          :select => 'id, login, deleted, realname',
                          :include => :projects,
@@ -73,8 +75,9 @@ class UsersController < ApplicationController
                            'projects.id' => p_id
                          })
     else
-      deleted = User.all(:select => 'id, login, deleted, realname',
-                         :conditions => {:deleted => true})
+ #     deleted = User.all(:select => 'id, login, deleted, realname',
+ #                        :conditions => {:deleted => true})
+      deleted = User.select(:id, :login, :deleted, :realname).where("deleted = ?", true)
     end
 
     render :json => deleted.map{|d| d.to_tree}
