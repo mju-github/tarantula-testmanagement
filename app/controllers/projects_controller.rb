@@ -24,15 +24,19 @@ class ProjectsController < ApplicationController
         projects = Project.where(conds)
     else
         #TAR-14 outdated syntax: projects = @current_user.projects.find(:all, :conditions => conds)
-	projects = @current_user.projects.find(conds)
+	projects = @current_user.projects.where(conds)
     end
+    
+    unless projects.nil? #check if any projects found
+      data = projects.map do |p|
+        p_tree = p.to_tree
 
-    data = projects.map do |p|
-      p_tree = p.to_tree
-      p_tree[:selected] = true if p.id == @project.id
-      p_tree
-    end
-
+        unless @project.nil? #check for @project not being nil
+          p_tree[:selected] = true if p.id == @project.id
+        end
+        p_tree
+      end
+    end 
     render :json => data
   end
 
@@ -69,9 +73,11 @@ class ProjectsController < ApplicationController
   end
 
   def show
-    @project = Project.find(params[:id])
+    unless :id.nil?
+      @project = Project.find(params[:id])
 
-    render :json => {:data => [@project.to_data]}
+      render :json => {:data => [@project.to_data]}
+    end
   end
 
   # Return user's permission group from project.
