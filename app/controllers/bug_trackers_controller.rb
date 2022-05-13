@@ -13,7 +13,7 @@ class BugTrackersController < ApplicationController
   end
 
   def index
-    render :json => {:data => BugTracker.find(:all).map(&:to_tree)}
+    render :json => {:data => BugTracker.all.map(&:to_tree)}
   end
 
   def show
