@@ -70,8 +70,9 @@ class User < ActiveRecord::Base
 
   def latest_project
     return nil if (self.latest_project_id).nil? #Otherwise exception in case of no assigned project
-    pa = project_assignments.find(:first, :conditions =>
-           {:project_id => self.latest_project_id})
+    #pa = project_assignments.find(:first, :conditions => {:project_id => self.latest_project_id})
+	
+    pa = project_assignments.where(project_id: 'self.latest_project_id').first
     unless pa
       return nil if project_assignments.empty?
       pa = project_assignments.first
