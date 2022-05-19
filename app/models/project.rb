@@ -131,7 +131,7 @@ class Project < ActiveRecord::Base
     self.assignments.delete_all
 
     user_arr.each do |u|
-      user = User.find(:first, :conditions => {:login => u['login']})
+      user = User.where(login: u['login']).first
       ta = nil # test area
       if u['test_area']
         ta = self.test_areas.find_by_name(u['test_area'])

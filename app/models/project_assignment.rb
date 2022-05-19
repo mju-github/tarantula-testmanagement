@@ -35,7 +35,7 @@ class ProjectAssignment < ActiveRecord::Base
   
   def one_assignment_per_user_per_project
     return unless self.new_record?
-    if project.assignments.count(:conditions => {:user_id => self.user_id}) >= 1
+    if project.assignments.where(user_id: self.user_id).count >= 1
       raise "User already has an assignment for project \"#{project.name}\"!"
     end
   end
