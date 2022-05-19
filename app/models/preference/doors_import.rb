@@ -27,7 +27,7 @@ module Preference
                          :max_object_level        => "10", 
                          :test_area               => "",
                          :tags                    => "" },
-               :project => project)
+	                 :project => project)
     end
   end
   
