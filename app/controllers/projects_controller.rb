@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 class ProjectsController < ApplicationController
   before_action :get_tags_offset_and_filter, :only => [:index]
-  before_action :current_id
+  #before_action :current_id  #with this before_action the project from the project explorer list cannot be loaded because the current_id is set to fixed 0 for admin without assigned project
 
   before_action :only => [:create, :destroy] do |c|
     c.require_permission(['ADMIN'])
@@ -28,7 +28,7 @@ class ProjectsController < ApplicationController
     end
     
     unless projects.nil? #check if any projects found
-      data = projects.map do |p|
+        data = projects.map do |p|
         p_tree = p.to_tree
 
         unless @project.nil? #check for @project not being nil
