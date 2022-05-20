@@ -49,6 +49,7 @@ class Project < ActiveRecord::Base
     ProjectAssignment.destroy_all(:project_id => proj.id, :group => 'ADMIN')
   end
 
+#TODO test code
   def bug_components
     BugComponent.find(:all,
       :conditions => {:bug_product_id => self.bug_product_ids})
@@ -76,7 +77,7 @@ class Project < ActiveRecord::Base
       self.name != atts['name'] and !updater.admin?
 
     transaction do
-      self.update_attributes!(atts)
+      self.update!(atts)
       set_test_areas(t_areas)
       set_bug_products(b_products)
       set_users(assigned_users)
