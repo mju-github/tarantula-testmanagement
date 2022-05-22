@@ -7,7 +7,7 @@ module Preference
     belongs_to :user
     belongs_to :project # optional
     
-    scope :dashboard, where(:type => 'Dashboard')
+    scope :dashboard, -> {  where(:type => 'Dashboard') }
     scope :for_project, lambda {|p| where(:project_id => p.id)}
     
     # Serializing assignment
