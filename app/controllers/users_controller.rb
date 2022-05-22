@@ -31,14 +31,16 @@ class UsersController < ApplicationController
       if not @project.nil? then #if user is admin then there is no assigned project
         p_id = @project.id if p_id == 'current'
       end
-      active = User.all(
+      
+      #TODO probably code not working because of being outdated, case has to be tested
+      active = User.where(
                         :select => 'id, login, deleted, realname',
                         :include => :projects,
                         :conditions => ["project_assignments.group IN \
                                         (#{User::Groups.values.map{|s|"'#{s}'"}.join(',')}) AND projects.id = ? \
                                         AND users.deleted = 0 AND users.login LIKE ? ",
                                         p_id, "%#{@filter}%"]
-                        )
+                        ).all
     elsif (@current_user.admin?)
     #deprecated method .all
     #  active = User.all(
@@ -50,13 +52,18 @@ class UsersController < ApplicationController
 
     else
       # Users in same projects
-      active = User.all(
-                        :select => 'id, login, deleted, realname',
-                        :include => :projects,
-                        :conditions => ["users.deleted=0 AND projects.id IN \
-                                        (#{@current_user.project_ids.join(',')}) \
-                                        AND users.login LIKE ? ", "%#{@filter}%"])
-    end
+     # active = User.all(
+     #                   :select => 'id, login, deleted, realname',
+     #                   :include => :projects,
+     #                   :conditions => ["users.deleted=0 AND projects.id IN \
+     #                                   (#{@current_user.project_ids.join(',')}) \
+     #                                   AND users.login LIKE ? ", "%#{@filter}%"])
+    
+     active = User.select("id", "login", "deleted", "realname").includes(:projects).where("deleted=0 AND projects.id IN\
+					(#{current_user.project_ids.join(',')}) \
+					AND users.login LIKE ? ", "%#{@filter}%"])
+
+     end
 
     render :json => active.map{|a| a.to_tree}
   end
