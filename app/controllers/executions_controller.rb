@@ -49,7 +49,7 @@ class ExecutionsController < ApplicationController
           opts[:limit] = local_limit.to_i
         end
 
-        @active = project.executions.active.ordered.all(opts)
+        @active = project.executions.active.ordered.where(opts).all
       else
         @active = user.executions.active.ordered
       end
