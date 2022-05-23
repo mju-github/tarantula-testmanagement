@@ -3,13 +3,17 @@ class TasksController < ApplicationController
   # /cases/:case_id/tasks
   def index
     res = resource
-    tasks = res.tasks.active.ordered.find(:all, 
-      :conditions => {:assigned_to => @current_user.id})
+    tasks = res.tasks.active.ordered.where( 
+      :conditions => {:assigned_to => @current_user.id}).all
     monitored = []    
     if res.is_a?(User)
-      monitored = Task::Base.active.ordered.find(:all,
-      :conditions => ["created_by = :uid and assigned_to != :uid", 
-                     {:uid => @current_user.id}])
+
+#      monitored = Task::Base.active.ordered.where(
+#      :conditions => ["created_by = :uid and assigned_to != :uid", 
+#                     {:uid => @current_user.id}]).all
+
+      monitored = Task::Base.active.ordered.where( ["created_by = :uid and assigned_to != :uid", {:uid => @current_user.id}]).all
+
     end
     
     render :json => (tasks + monitored).map(&:to_data)
