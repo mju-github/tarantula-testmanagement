@@ -33,11 +33,8 @@ class UsersController < ApplicationController
       end
       
       #TODO probably code not working because of being outdated, case has to be tested
-      active = User.where(
-                        :select => 'id, login, deleted, realname',
-                        :include => :projects,
-                        :conditions => ["project_assignments.group IN \
-                                        (#{User::Groups.values.map{|s|"'#{s}'"}.join(',')}) AND projects.id = ? \
+      active = User.select("id", "login", "deleted", "realname").include(:project).where(["project_assignments.group IN \
+                                       	 (#{User::Groups.values.map{|s|"'#{s}'"}.join(',')}) AND projects.id = ? \
                                         AND users.deleted = 0 AND users.login LIKE ? ",
                                         p_id, "%#{@filter}%"]
                         ).all
@@ -48,7 +45,7 @@ class UsersController < ApplicationController
     #                    :conditions => ["deleted=0 AND login LIKE ? ",
     #                                    "%#{@filter}%"])
     
-      active = User.select("id", "login", "deleted", "realname").where("deleted=0 AND login LIKE?", "%#{@filter}%")
+      active = User.select("id", "login", "deleted", "realname").where("deleted=0 AND login LIKE?", "%#{@filter}%").all
 
     else
       # Users in same projects
@@ -59,9 +56,9 @@ class UsersController < ApplicationController
      #                                   (#{@current_user.project_ids.join(',')}) \
      #                                   AND users.login LIKE ? ", "%#{@filter}%"])
     
-     active = User.select("id", "login", "deleted", "realname").includes(:projects).where("deleted=0 AND projects.id IN\
-					(#{current_user.project_ids.join(',')}) \
-					AND users.login LIKE ? ", "%#{@filter}%"])
+     active = User.select("id", "login", "deleted", "realname").include(:projects).where("deleted=0 AND projects.id IN \
+					(#{@current_user.project_ids.join(',')}) \
+					AND users.login LIKE ? ", "%#{@filter}%").all
 
      end
 
