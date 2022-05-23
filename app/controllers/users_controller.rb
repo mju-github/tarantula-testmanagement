@@ -32,12 +32,11 @@ class UsersController < ApplicationController
         p_id = @project.id if p_id == 'current'
       end
       
-      #TODO probably code not working because of being outdated, case has to be tested
-      active = User.select("id", "login", "deleted", "realname").include(:project).where(["project_assignments.group IN \
+      active = User.select("id", "login", "deleted", "realname").joins(:projects).where("project_assignments.group IN \
                                        	 (#{User::Groups.values.map{|s|"'#{s}'"}.join(',')}) AND projects.id = ? \
                                         AND users.deleted = 0 AND users.login LIKE ? ",
-                                        p_id, "%#{@filter}%"]
-                        ).all
+                                        p_id, "%#{@filter}%")
+                        
     elsif (@current_user.admin?)
     #deprecated method .all
     #  active = User.all(
@@ -56,7 +55,7 @@ class UsersController < ApplicationController
      #                                   (#{@current_user.project_ids.join(',')}) \
      #                                   AND users.login LIKE ? ", "%#{@filter}%"])
     
-     active = User.select("id", "login", "deleted", "realname").include(:projects).where("deleted=0 AND projects.id IN \
+     active = User.select("id", "login", "deleted", "realname").joins(:projects).where("users.deleted=0 AND projects.id IN \
 					(#{@current_user.project_ids.join(',')}) \
 					AND users.login LIKE ? ", "%#{@filter}%").all
 
